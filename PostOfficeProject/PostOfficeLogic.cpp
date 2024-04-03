@@ -22,13 +22,13 @@ void PostOfficeLogic::chooseAction()
 			std::cout << "exiting...";
 			running = false;
 			break;
-           case 9: 
-			   std::cout << "choose an action: " << std::endl;
-			   break;
-			   default:
-				   std::cout << "Invalid ID" << std::endl;
-				   std:: cout << "ID must be a 9 digit number" << std::endl;
-				   break;
+		case 9:
+			std::cout << "choose an action: " << std::endl;
+			break;
+		default:
+			std::cout << "Invalid ID" << std::endl;
+			std::cout << "ID must be a 9 digit number" << std::endl;
+			break;
 		}
 	}
 }
@@ -51,11 +51,13 @@ void PostOfficeLogic::setOfficeSettings()
 	{
 		while (getline(config, line))
 		{
+		
 			if (line.find("officerCount") != string::npos)
 			{
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
 				cout << "officerCount: " << officerCount << endl;
 			}
+			
 		}
 		config.close();
 	}
