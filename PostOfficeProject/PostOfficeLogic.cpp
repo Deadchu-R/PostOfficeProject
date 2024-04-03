@@ -1,7 +1,8 @@
 #include "PostOfficeLogic.h"
 #include <iostream>
+#include <fstream>
 #include <string>
-
+using namespace std;
 void PostOfficeLogic::chooseAction()
 {
 	setOfficeSettings();
@@ -44,6 +45,26 @@ int PostOfficeLogic::countDigits(int number)
 void PostOfficeLogic::setOfficeSettings()
 {
 	// will adjust setting according to config file
+	fstream config("OfficeConfig.txt");
+	string line;
+	if (config.is_open())
+	{
+		while (getline(config, line))
+		{
+			if (line.find("officerCount") != string::npos)
+			{
+				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
+				cout << "officerCount: " << officerCount << endl;
+			}
+		}
+		config.close();
+	}
+	else
+	{
+		cout << "Unable to open file";
+	}
+
+	// add a file and make a format to accept each setting (same will be later for the list of Customers)
 }
 Customer PostOfficeLogic::findCustomer(int ID)
 {

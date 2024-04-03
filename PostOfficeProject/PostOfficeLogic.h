@@ -8,5 +8,7 @@ private:
 	void setOfficeSettings();
 	int countDigits(int number);
 	Customer findCustomer(int ID);
+	int officerCount;
+
 };
 
