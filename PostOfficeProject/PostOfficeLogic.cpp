@@ -22,13 +22,13 @@ void PostOfficeLogic::chooseAction()
 			std::cout << "exiting...";
 			running = false;
 			break;
-		case 9:
-			std::cout << "choose an action: " << std::endl;
-			break;
-		default:
-			std::cout << "Invalid ID" << std::endl;
-			std::cout << "ID must be a 9 digit number" << std::endl;
-			break;
+           case 9: 
+			   std::cout << "choose an action: " << std::endl;
+			   break;
+			   default:
+				   std::cout << "Invalid ID" << std::endl;
+				   std:: cout << "ID must be a 9 digit number" << std::endl;
+				   break;
 		}
 	}
 }
