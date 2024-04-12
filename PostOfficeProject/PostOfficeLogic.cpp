@@ -51,22 +51,26 @@ void PostOfficeLogic::setOfficeSettings()
 	{
 		while (getline(config, line))
 		{
-		
 			if (line.find("officerCount") != string::npos)
 			{
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
 				cout << "officerCount: " << officerCount << endl;
 			}
-			
 		}
 		config.close();
 	}
 	else
 	{
-		cout << "Unable to open file";
+		cout << "Unable to open file, please check config.txt";
 	}
 
 	// add a file and make a format to accept each setting (same will be later for the list of Customers)
+}
+void SetCustomersList()
+{
+	 
+	// will read from a file and set the list of customers
+	// will be used to find a customer
 }
 Customer PostOfficeLogic::findCustomer(int ID)
 {
