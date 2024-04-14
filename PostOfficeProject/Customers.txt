@@ -1,1 +1,3 @@
-Customer 1: name-Jhonson, ID-012345678, BirthYear-1440
+Format Symbols: ~ID~, $Name$, %Year%  
+~123456780~ $Jason$ %1440%
+~206697450~ $Roee$ %1998%

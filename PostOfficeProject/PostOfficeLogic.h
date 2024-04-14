@@ -10,8 +10,10 @@ private:
 	int countDigits(int number);
 	Customer findCustomer(int ID);
 	int officerCount;
-	void SetCustomersList();
+	void setCustomersList(int ID);
     std::list<Customer> customersList;
+	std::string findDataBySymbol(string line, string symbol);
+	bool tryFindCustomer(int ID, Customer customer);
 
 };
 
