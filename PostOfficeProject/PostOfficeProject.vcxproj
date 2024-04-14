@@ -135,9 +135,7 @@
   <ItemGroup>
     <ClInclude Include="Customer.h" />
     <ClInclude Include="CustomerList.h" />
-    <ClInclude Include="PostOfficeConfig.h" />
     <ClInclude Include="PostOfficeLogic.h" />
-    <ClInclude Include="PostOfficeQueue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

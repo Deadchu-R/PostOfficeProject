@@ -4,7 +4,7 @@
 class PostOfficeLogic
 {
 public:
-	void chooseAction();
+	void runPostOffice();
 private:
 	void setOfficeSettings();
 	int countDigits(int number);

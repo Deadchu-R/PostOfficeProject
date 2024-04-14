@@ -7,7 +7,7 @@ int main()
     PostOfficeLogic postOfficeLogic;
     // will adjust setting according to config file
     // run the post office logic
-    postOfficeLogic.chooseAction();
+    postOfficeLogic.runPostOffice();
     std::cout << "Hello World!\n";
 
 }
