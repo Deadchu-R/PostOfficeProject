@@ -3,13 +3,20 @@
 #include <string>
 #include <list>
 #include "Customer.h"
-class node
+class customerList
 {
    public:
    Customer data;
-	node* next;
-	node* prev;
-	node(Customer data);
-	~node();
+   struct Node
+   {
+	Customer data;
+	struct Node* next;
+	struct Node* prev;
+   };
+
+	void push(Node** head, Customer customerData);
+	void insertAfter(Node* prev_node, Customer customerData);
+	void append(Node** head, Customer customerData);
+	void deleteNode(Node** head, Node* del);
 };
 
