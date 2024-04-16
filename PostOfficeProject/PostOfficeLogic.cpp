@@ -12,9 +12,9 @@ void PostOfficeLogic::runPostOffice()
 	{
 		string IDString;
 		int ID{};
-		std::cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
-		std::cout << "or enter 1 digit then press Enter to" << exitText << std::endl;
-		std::cin >> IDString;
+		cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
+		cout << "or enter 1 digit then press Enter to" << exitText << std::endl;
+		cin >> IDString;
 
 		switch (IDString.length()) {
 		case 1:
@@ -24,13 +24,11 @@ void PostOfficeLogic::runPostOffice()
 			break;
 		case 9:
 			ID = stoi(IDString);
-			std::cout << "green " << std::endl;
 			setCustomersList(ID);
 			break;
 		default:
-			std::cout << "red " << std::endl;
-			std::cout << "Invalid ID" << std::endl;
-			std::cout << "ID must be a 9 digit number" << std::endl;
+			cout << "Invalid ID" << std::endl;
+			cout << "ID must be a 9 digit number" << std::endl;
 			break;
 		}
 
@@ -66,9 +64,8 @@ void PostOfficeLogic::setCustomersList(int ID)
 	cout << "setCustomersList" << endl;
 	Customer customer;
 	//Customer customer = tryFindCustomer(ID);
-	tryFindCustomer(ID, customer);
-	// Clear console
-	system("CLS");
+	customer = findCustomer(ID);
+	system("CLS"); // Console.Clear c++ editon
 	cout << "Customer ID: " << customer.ID << endl
 		<< "Customer Name: " << customer.name << endl
 		<< "Customer Birth Year: " << customer.birthYear << endl;
@@ -100,7 +97,11 @@ Customer PostOfficeLogic::findCustomer(int ID)
 		if (!found)
 		{
 			cout << "Customer not found" << endl;
-			//customer.ID = 0;
+			cout << "have you written the right ID?" << endl;
+			cout << "press any key then Enter to return to main menu" << endl;
+			cin >> line;
+			system("CLS");
+			runPostOffice();
 		}
 		customers.close();
 	}
