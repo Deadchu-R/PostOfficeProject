@@ -1,5 +1,22 @@
 #include "CustomerList.h"
 
+void customerList::addToQueue(Customer customer)
+{
+	Node* newNode = new Node;
+	cout << "created new node of customer" << endl;
+	push(&newNode, customer);
+	printList(newNode);
+
+	
+}
+void customerList::printList(Node* head)
+{
+	while (head != NULL)
+	{
+		cout << head->data.birthYear << ","<< head->data.ID << "," << head->data.name << endl;
+		head = head->next;
+	}
+}
 void customerList::push(Node** head, Customer customerData)
 {
 	Node *newNode = new Node();

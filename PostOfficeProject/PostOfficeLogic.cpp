@@ -1,4 +1,5 @@
 #include "PostOfficeLogic.h"
+#include "CustomerList.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -63,12 +64,14 @@ void PostOfficeLogic::setCustomersList(int ID)
 {
 	cout << "setCustomersList" << endl;
 	Customer customer;
-	//Customer customer = tryFindCustomer(ID);
-	customer = findCustomer(ID);
+	customerList listOfCustomers;
+	customer = findCustomer(ID); // find the customer in customers.txt
 	system("CLS"); // Console.Clear c++ editon
 	cout << "Customer ID: " << customer.ID << endl
 		<< "Customer Name: " << customer.name << endl
 		<< "Customer Birth Year: " << customer.birthYear << endl;
+	// will start CustomerList.addToQueue
+	listOfCustomers.addToQueue(customer);
 	// will read from a file and set the list of customers
 	// will be used to find a customer
 }
