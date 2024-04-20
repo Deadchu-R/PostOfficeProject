@@ -25,11 +25,31 @@ void PostOfficeLogic::runPostOffice()
 			break;
 		case 9:
 			ID = stoi(IDString);
-			setCustomersList(ID);
+			searchInCustomersList(ID);
 			break;
 		default:
-			cout << "Invalid ID" << std::endl;
-			cout << "ID must be a 9 digit number" << std::endl;
+			cout << "ID sas not found" << std::endl;
+			cout << "either customer not registered or ID is invalid" << std::endl;
+			cout << "choose action:" << endl;
+			cout << "1. try inserting ID again" << endl;
+			cout << "2. Create Customer account" << endl;
+			string input;
+			cin >> input;
+			int inputNum = stoi(input);
+			switch (inputNum)
+			{
+			default:
+				cout << "returning to menu" << endl;
+				cout << "press enter to continue" << endl;
+				cin;
+				break;
+			case 2:
+				//create customer method
+				break;
+
+			}
+			
+
 			break;
 		}
 
@@ -60,7 +80,7 @@ void PostOfficeLogic::setOfficeSettings()
 
 	// add a file and make a format to accept each setting (same will be later for the list of Customers)
 }
-void PostOfficeLogic::setCustomersList(int ID)
+void PostOfficeLogic::searchInCustomersList(int ID)
 {
 	cout << "setCustomersList" << endl;
 	Customer customer;
@@ -70,10 +90,37 @@ void PostOfficeLogic::setCustomersList(int ID)
 	cout << "Customer ID: " << customer.ID << endl
 		<< "Customer Name: " << customer.name << endl
 		<< "Customer Birth Year: " << customer.birthYear << endl;
+	queuePlace(customer);
 	// will start CustomerList.addToQueue
 	listOfCustomers.addToQueue(customer);
 	// will read from a file and set the list of customers
 	// will be used to find a customer
+}
+
+int PostOfficeLogic::queuePlace(Customer customer)
+{
+	string input;
+	bool choseAction = false;
+	cin >> input;
+	int inputNum = stoi(input);
+	while (!choseAction)
+	{
+		cout << "what would you like to do?" << endl;
+		cout << "1. package pickup" << endl;
+		cout << "2. send a package" << endl;
+		cout << "3. make payments" << endl;
+		cout << "4. order a product" << endl;
+			switch (inputNum)
+			{
+			 case 1:
+
+				break;
+			 default:
+				 cout << "error, we accept only numbers" << endl;
+				 break;
+			};
+
+	}
 }
 Customer PostOfficeLogic::findCustomer(int ID)
 {
