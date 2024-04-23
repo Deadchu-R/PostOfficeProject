@@ -15,7 +15,8 @@ void PostOfficeLogic::runPostOffice()
 		cout << "1. Officer" << endl;
 		cout << "2. Customer" << endl;
 		cout << "3. Exit" << endl;
-		int input = cin.get();
+		int input;
+		cin >> input;
 		switch (input)
 		{
 		case 1:
@@ -117,9 +118,10 @@ void PostOfficeLogic::searchInCustomersList(int ID)
 	cout << "Customer ID: " << customer.ID << endl
 		<< "Customer Name: " << customer.name << endl
 		<< "Customer Birth Year: " << customer.birthYear << endl;
-	queuePlace(customer);
+	customer = queuePlace(customer);
 	// will start CustomerList.addToQueue
 	listOfCustomers.addToQueue(customer);
+	listOfCustomers.printList();
 }
 Customer PostOfficeLogic::createNewCustomer(int ID)
 {
@@ -155,7 +157,7 @@ Customer PostOfficeLogic::createNewCustomer(int ID)
 	return customer;
 	
 }
-int PostOfficeLogic::queuePlace(Customer customer)
+Customer PostOfficeLogic::queuePlace(Customer customer)
 {
 	bool choseAction = false;
 	int actionNum;
@@ -172,16 +174,20 @@ int PostOfficeLogic::queuePlace(Customer customer)
 			switch (inputNum)
 			{
 			 case 1:
-				 actionNum = 1;
+				 customer.actionType = 1;
+				 choseAction = true;
 				break;
 			 case 2:
-				 actionNum = 2;
+				 customer.actionType = 2;
+				 choseAction = true;
 				 break;
 			 case 3:
-				 actionNum = 3;
+				 customer.actionType = 3;
+				 choseAction = true;
 				 break;
 			 case 4: 
-				 actionNum = 4;
+				 customer.actionType = 4;
+				 choseAction = true;
 				 break;
 			 default:
 				 cout << "error, we accept only numbers" << endl;
@@ -189,7 +195,7 @@ int PostOfficeLogic::queuePlace(Customer customer)
 				 break;
 			};
 	}
-	return actionNum;
+	return customer;
 }
 Customer PostOfficeLogic::findCustomer(int ID)
 {

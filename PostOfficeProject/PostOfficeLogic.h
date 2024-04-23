@@ -21,7 +21,7 @@ private:
 	bool isNumber(std::string s);
 	void officerActions();
 	int countDigits(int number);
-	int queuePlace(Customer customer);
+	Customer queuePlace(Customer customer);
 	Customer createNewCustomer(int ID);
 	Customer findCustomer(int ID);
 	Customer setCustomerValues(string line);

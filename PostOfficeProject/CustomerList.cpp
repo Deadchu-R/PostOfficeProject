@@ -5,11 +5,13 @@ void customerList::addToQueue(Customer customer)
 	Node* newNode = new Node;
 	cout << "created new node of customer" << endl;
 	push(&newNode, customer);
-	printList(newNode);
+	
+	
+	printList();
 
 	
 }
-void customerList::printList(Node* head)
+void customerList::printList()
 {
 	int queuePlace = 1;
 	while (head != NULL)

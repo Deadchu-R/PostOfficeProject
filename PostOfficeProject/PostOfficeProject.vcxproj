@@ -136,6 +136,8 @@
   <ItemGroup>
     <ClInclude Include="Customer.h" />
     <ClInclude Include="CustomerList.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="PostOfficeLogic.h" />
     <ClInclude Include="Queue.h" />
   </ItemGroup>

@@ -7,6 +7,7 @@ class Customer // aka data class
 	int birthYear = 1998;
 	string name = "John Doe";
 	int ID = 500000000; // lets say 9 digit number
+	int actionType = 0;
 
 };
 
