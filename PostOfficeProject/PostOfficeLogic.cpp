@@ -6,47 +6,79 @@
 using namespace std;
 void PostOfficeLogic::runPostOffice()
 {
+	
 	system("CLS"); // Console.Clear c++ editon
 	setOfficeSettings();
-	exitText = "Exit";
 	while (running)
 	{
-		string IDString;
-		int ID{};
-		cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
-		cout << "or enter 1 digit then press Enter to" << exitText << std::endl;
-		// check that use typed a number
-		cin >> IDString;
-		if (!isdigit(atoi(IDString.c_str())))
+		cout << "Welcome to the Post Office, choose division or exit" << endl;
+		cout << "1. Officer" << endl;
+		cout << "2. Customer" << endl;
+		cout << "3. Exit" << endl;
+		int input = cin.get();
+		switch (input)
 		{
-			cout << "error , we only accept numbers" << endl;
-			cout << "press Enter to go back" << endl;
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			cin.get();
-			runPostOffice();
-		}
-		ID = stoi(IDString);
-
-		switch (IDString.length()) {
 		case 1:
-			std::cout << "Goodbye" << std::endl;
-			std::cout << "Exiting...";
-			running = false;
+			officerActions();
 			break;
-		case 9:
-			searchInCustomersList(ID);
+		case 2:
+			customerActions();
+			break;
+		case 3: 
+			running = false;
 			break;
 		default:
-			std::cout << "Goodbye" << std::endl;
-			std::cout << "Exiting...";
-			running = false;
+			cout << "didn't not recive a valid input" << endl;
+			waitForInput();
 			break;
 		}
-
 	}
-}
+	customerActions();
 
+}
+void PostOfficeLogic::officerActions()
+{
+}
+void PostOfficeLogic::customerActions()
+{
+	bool customerActionRunning = true;
+		while (customerActionRunning)
+		{
+			system("CLS");
+			string IDString;
+			int ID{};
+			cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
+			cout << "or enter 1 digit then press Enter to exit" << endl;
+			cin >> IDString;
+		
+				if (!isNumber(IDString))
+				{
+					cout << "error , we only accept numbers" << endl;
+					waitForInput();
+					customerActions();
+				}
+		
+
+			ID = stoi(IDString);
+			switch (IDString.length()) {
+			case 1:
+				std::cout << "Goodbye" << std::endl;
+				std::cout << "Exiting...";
+				customerActionRunning = false;
+				break;
+			case 9:
+				searchInCustomersList(ID);
+				break;
+			default:
+				cout << "ID Should be 9 digit and you inserted: " << IDString.length() << endl;
+				waitForInput();
+				customerActions();
+				break;
+			}
+
+		}
+	
+}
 void PostOfficeLogic::setOfficeSettings()
 {
 	// will adjust setting according to config file
@@ -61,6 +93,12 @@ void PostOfficeLogic::setOfficeSettings()
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
 				cout << "officerCount: " << officerCount << endl;
 			}
+			if (line.find("currentYear") != string::npos)
+			{
+				currentYear = stoi(line.substr(line.find("=") + 1));
+				cout << "current year is: " << currentYear << endl;
+
+			}
 		}
 		config.close();
 	}
@@ -69,7 +107,6 @@ void PostOfficeLogic::setOfficeSettings()
 		cout << "Unable to open file, please check config.txt";
 	}
 
-	// add a file and make a format to accept each setting (same will be later for the list of Customers)
 }
 void PostOfficeLogic::searchInCustomersList(int ID)
 {
@@ -83,27 +120,45 @@ void PostOfficeLogic::searchInCustomersList(int ID)
 	queuePlace(customer);
 	// will start CustomerList.addToQueue
 	listOfCustomers.addToQueue(customer);
-	// will read from a file and set the list of customers
-	// will be used to find a customer
 }
-void PostOfficeLogic::createNewCustomer(int ID)
+Customer PostOfficeLogic::createNewCustomer(int ID)
 {
+	Customer customer;
 	string input;
+	int year = 0;
 	cout << "what is your name?" << endl;
 	cin >> input;
 	string name = input;
 	cout << "In which year were you born?" << endl;
 	cin >> input;
-	int year = stoi(input);
+	if (isNumber(input))
+	{
+		 year = stoi(input);
+	}
+	else if (!isNumber(input) || year - currentYear < 0 || year - currentYear > maxAge) 
+	{
+		cout << "year is not valid, please enter a valid year";
+		waitForInput();
+		createNewCustomer(ID);
+	}
 
-	fstream customers;
-		customers.open("Customers.txt");
-		customers << IDSymbol << ID << IDSymbol << " " << nameSymbol << name << nameSymbol << " " << yearSymbol << year << yearSymbol;
+
+	ofstream customers("Customers.txt", ios::app); // app is short for append
+	if (customers.is_open())
+	{
+		customers << IDSymbol << ID << IDSymbol << " " << nameSymbol << name << nameSymbol << " " << yearSymbol << year << yearSymbol << std::endl;
 		customers.close();
+	}
+	customer.ID = ID;
+	customer.name = name;
+	customer.birthYear = year;
+	return customer;
+	
 }
 int PostOfficeLogic::queuePlace(Customer customer)
 {
 	bool choseAction = false;
+	int actionNum;
 	while (!choseAction)
 	{
 		string input;
@@ -117,14 +172,24 @@ int PostOfficeLogic::queuePlace(Customer customer)
 			switch (inputNum)
 			{
 			 case 1:
-
+				 actionNum = 1;
 				break;
+			 case 2:
+				 actionNum = 2;
+				 break;
+			 case 3:
+				 actionNum = 3;
+				 break;
+			 case 4: 
+				 actionNum = 4;
+				 break;
 			 default:
 				 cout << "error, we accept only numbers" << endl;
+				 waitForInput();
 				 break;
 			};
 	}
-	return 0; // need to change later
+	return actionNum;
 }
 Customer PostOfficeLogic::findCustomer(int ID)
 {
@@ -161,16 +226,16 @@ Customer PostOfficeLogic::findCustomer(int ID)
 				cout << "press enter to continue" << endl;
 				cin;
 				customers.close();
-				runPostOffice();
+				customerActions();
 				break;
 			case 2:
-				//create customer method
-				createNewCustomer(ID);
+				customer = createNewCustomer(ID);
+				return customer;
 				break;
 
 			}
 			system("CLS");
-			runPostOffice();
+			customerActions();
 		}
 		customers.close();
 	}
@@ -194,14 +259,7 @@ Customer PostOfficeLogic::setCustomerValues(string line)
 	customer.birthYear = stoi(findDataBySymbol(line, yearSymbol));
 	return customer;
 }
-bool PostOfficeLogic::tryFindCustomer(int ID, Customer customer)
-{
-	// will search for customer in an outside list of customers
-	// if customer exists , return true
-	// if customer does not exist, return false
-    customer =	findCustomer(ID);
-	return customer.ID != 0;
-}
+
 /// <summary>
 /// finding data between symbols at line from a file
 /// </summary>
@@ -213,6 +271,23 @@ string PostOfficeLogic::findDataBySymbol(string line, string symbol)
 	size_t symbolStart = line.find(symbol) + 1;
 	size_t symbolEnd = line.find(symbol, symbolStart);
 	return line.substr(symbolStart, symbolEnd - symbolStart);
+}
+bool PostOfficeLogic::isNumber(string s)
+{
+	for (int i = 0; i < s.length(); i++)
+	{
+		if (!isdigit(s[i]))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+void PostOfficeLogic::waitForInput()
+{
+	cout << "press any key to return" << endl;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cin.get();
 }
 
 

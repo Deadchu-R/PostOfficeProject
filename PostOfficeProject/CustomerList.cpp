@@ -11,10 +11,13 @@ void customerList::addToQueue(Customer customer)
 }
 void customerList::printList(Node* head)
 {
+	int queuePlace = 1;
 	while (head != NULL)
 	{
 		cout << head->data.birthYear << ","<< head->data.ID << "," << head->data.name << endl;
+		cout << head->data.ID << "is: " << queuePlace << "in line";
 		head = head->next;
+		queuePlace++;
 	}
 }
 void customerList::push(Node** head, Customer customerData)
