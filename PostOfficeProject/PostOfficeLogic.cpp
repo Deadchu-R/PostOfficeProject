@@ -1,13 +1,12 @@
 #include "PostOfficeLogic.h"
-#include "CustomerList.h"
-#include <iostream>
-#include <fstream>
-#include <string>
+
+
 using namespace std;
 void PostOfficeLogic::runPostOffice()
 {
 	
 	system("CLS"); // Console.Clear c++ editon
+	cout << "customers in queue: " << customersInQueue << endl;
 	setOfficeSettings();
 	while (running)
 	{
@@ -48,6 +47,7 @@ void PostOfficeLogic::customerActions()
 			system("CLS");
 			string IDString;
 			int ID{};
+		
 			cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
 			cout << "or enter 1 digit then press Enter to exit" << endl;
 			cin >> IDString;
@@ -61,6 +61,8 @@ void PostOfficeLogic::customerActions()
 		
 
 			ID = stoi(IDString);
+
+	
 			switch (IDString.length()) {
 			case 1:
 				std::cout << "Goodbye" << std::endl;
@@ -68,7 +70,7 @@ void PostOfficeLogic::customerActions()
 				customerActionRunning = false;
 				break;
 			case 9:
-				searchInCustomersList(ID);
+				searchInCustomersQueue(ID);
 				break;
 			default:
 				cout << "ID Should be 9 digit and you inserted: " << IDString.length() << endl;
@@ -109,19 +111,60 @@ void PostOfficeLogic::setOfficeSettings()
 	}
 
 }
-void PostOfficeLogic::searchInCustomersList(int ID)
+void PostOfficeLogic::searchInCustomersQueue(int ID)
+{
+	if (listOfCustomers.findNode(ID) != nullptr)
+	{
+		cout << "you are already in the queue" << endl;
+		cout << "would you like to cancle your appointment?" << endl;
+		cout << "1. Yes" << endl;
+		cout << "2. No" << endl;
+		string input;
+		cin >> input;
+		if (input == "1")
+		{
+			listOfCustomers.deleteNode(listOfCustomers.findNode(ID));
+			customersInQueue--;
+			cout << "you have been removed from the queue" << endl;
+			waitForInput();
+			customerActions();
+		}
+		else if (input == "2")
+		{
+			cout << "returning to menu" << endl;
+			waitForInput();
+			customerActions();
+		}
+		else
+		{
+			cout << "error, please enter a valid number" << endl;
+			waitForInput();
+			searchInCustomersQueue(ID);
+		}
+		waitForInput();
+		runPostOffice();
+	}
+	else
+	{
+		addToQueue(ID);
+	}
+
+}
+void PostOfficeLogic::addToQueue(int ID)
 {
 	Customer customer;
-	customerList listOfCustomers;
 	customer = findCustomer(ID); // find the customer in customers.txt
-	system("CLS"); 
+	system("CLS");
 	cout << "Customer ID: " << customer.ID << endl
 		<< "Customer Name: " << customer.name << endl
 		<< "Customer Birth Year: " << customer.birthYear << endl;
-	customer = queuePlace(customer);
-	// will start CustomerList.addToQueue
-	listOfCustomers.addToQueue(customer);
-	listOfCustomers.printList();
+	customer = customerChooseAction(customer);
+	customer.setCustomerHour();
+	listOfCustomers.setQueueOrder(customer);
+	customersInQueue++;
+	cout << "if you are a new customer." << endl;
+	waitForInput();
+	runPostOffice();
 }
 Customer PostOfficeLogic::createNewCustomer(int ID)
 {
@@ -148,7 +191,7 @@ Customer PostOfficeLogic::createNewCustomer(int ID)
 	ofstream customers("Customers.txt", ios::app); // app is short for append
 	if (customers.is_open())
 	{
-		customers << IDSymbol << ID << IDSymbol << " " << nameSymbol << name << nameSymbol << " " << yearSymbol << year << yearSymbol << std::endl;
+		customers << IDSymbol << ID << IDSymbol << " " << nameSymbol << name << nameSymbol << " " << yearSymbol << year << yearSymbol << endl;
 		customers.close();
 	}
 	customer.ID = ID;
@@ -157,7 +200,7 @@ Customer PostOfficeLogic::createNewCustomer(int ID)
 	return customer;
 	
 }
-Customer PostOfficeLogic::queuePlace(Customer customer)
+Customer PostOfficeLogic::customerChooseAction(Customer customer)
 {
 	bool choseAction = false;
 	int actionNum;
@@ -170,30 +213,17 @@ Customer PostOfficeLogic::queuePlace(Customer customer)
 		cout << "3. make payments" << endl;
 		cout << "4. order a product" << endl;
 		cin >> input;
-		int inputNum = stoi(input);
-			switch (inputNum)
-			{
-			 case 1:
-				 customer.actionType = 1;
-				 choseAction = true;
-				break;
-			 case 2:
-				 customer.actionType = 2;
-				 choseAction = true;
-				 break;
-			 case 3:
-				 customer.actionType = 3;
-				 choseAction = true;
-				 break;
-			 case 4: 
-				 customer.actionType = 4;
-				 choseAction = true;
-				 break;
-			 default:
-				 cout << "error, we accept only numbers" << endl;
-				 waitForInput();
-				 break;
-			};
+		if (isNumber(input) && stoi(input) < 4 && stoi(input) > 0)
+		{
+			cout << "you chose number:" << input  << endl;
+			choseAction = true;
+			actionNum = stoi(input);
+		}
+		else
+		{
+			cout << "error, we accept only numbers between 1 and 4" << endl;
+			waitForInput();
+		}
 	}
 	return customer;
 }

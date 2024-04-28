@@ -1,38 +1,89 @@
 #include "CustomerList.h"
 
-void customerList::addToQueue(Customer customer)
+void customerList::setQueueOrder(Customer customer)
 {
-	Node* newNode = new Node;
-	cout << "created new node of customer" << endl;
-	push(&newNode, customer);
 	
-	
-	printList();
+	//if (head == nullptr) push(customer);
+   // else ageSort(customer);
+	//printList();
+}
+void customerList::ageSort(Customer customer)
+{
+	if (customer.age() < 65)
+	{
+		Node* current = head;
+		while (current->next != nullptr && current->next->data.age() > 65 )
+		{
+			if (current->next->data.age() < 65) sortByActionType(current, customer);	
+			current = current->next;
+		}
+	}
+	else
+	{
+		Node* current = head;
+		while (current->next != nullptr)
+		{
+			if (customer.actionType < current->data.actionType);
+		}
+	}
+}
+void customerList::sortByActionType(Node* current,Customer customer)
+{
+		while (current->next != nullptr)
+		{
+			if (customer.actionType < current->data.actionType)
+			{
+				insertAfter(current, customer);
+				return;
+			}
+			current = current->next;
+		}
+		append(&head, customer);
+}
+void customerList::push(Customer customerData)
+{
+	Node* newNode = new Node(customerData);
+	//newNode->data = customerData;
+	newNode->next = head;
+	newNode->prev = nullptr;
 
-	
+	if (head != nullptr)
+	{
+		head->prev = newNode;
+		head = newNode;
+		cout << "added: " << newNode->data.name << " after: " << head->data.name << endl;
+	}
+	else
+	{
+		cout << "added: " << newNode->data.name << " as head" << endl;
+		this->head = newNode;
+	}
+}
+Node* customerList::findNode(int ID)
+{
+	Node* current = head;
+	while (current != nullptr)
+	{
+		if (current->data.ID == ID)
+		{
+			return current;
+		}
+		current = current->next;
+	}
+	return NULL;
 }
 void customerList::printList()
 {
+	Node* current = head;
+	cout << "Printing list:" << endl;
 	int queuePlace = 1;
-	while (head != NULL)
+	while (current != NULL)
 	{
-		cout << head->data.birthYear << ","<< head->data.ID << "," << head->data.name << endl;
-		cout << head->data.ID << "is: " << queuePlace << "in line";
-		head = head->next;
+		//cout << head->data.birthYear << "," << head->data.ID << "," << head->data.name << endl;
+		cout << current->data.name << " is: " << queuePlace << " in line" << endl;
+		current = current->next;
 		queuePlace++;
 	}
-}
-void customerList::push(Node** head, Customer customerData)
-{
-	Node *newNode = new Node();
-	newNode->data = customerData;
-	newNode->next = (*head);
-	newNode->prev = NULL;
-	if ((*head) != NULL)
-	{
-		(*head)->prev = newNode;
-	}
-	(*head) = newNode;
 }
 void customerList::insertAfter(Node* prev_node, Customer customerData)
 {
@@ -41,8 +92,8 @@ void customerList::insertAfter(Node* prev_node, Customer customerData)
 		std::cout << "Error: the given previous node cannot be NULL";
 		return;
 	}
-	Node *newNode = new Node();
-	newNode->data = customerData;
+	Node* newNode = new Node(customerData);
+	//newNode->data = customerData;
 	newNode->next = prev_node->next;
 	prev_node->next = newNode;
 	newNode->prev = prev_node;
@@ -52,35 +103,36 @@ void customerList::insertAfter(Node* prev_node, Customer customerData)
 	}
 }
 
-void customerList::append(Node** head, Customer customerData)
+//void customerList::append(Node** head, Customer customerData)
+//{
+//	Node* newNode = new Node(customerData);
+//	Node* last = *head;
+//	//newNode->data = customerData;
+//	newNode->next = NULL;
+//	if (head == NULL)
+//	{
+//		newNode->prev = NULL;
+//		*head = newNode;
+//		return;
+//	}
+//	while (last->next != NULL)
+//	{
+//		last = last->next;
+//	}
+//	last->next = newNode;
+//	newNode->prev = last;
+//	return;
+//}
+
+void customerList::deleteNode(Node* del)
 {
-	Node *newNode = new Node();
-	Node *last = *head;
-	newNode->data = customerData;
-	newNode->next = NULL;
-	if (*head == NULL)
+	if (head == NULL || del == NULL)
 	{
-		newNode->prev = NULL;
-		*head = newNode;
 		return;
 	}
-	while (last->next != NULL)
+	if (head == del) // if the node i want to delete is first, change head to it's next then delete it
 	{
-		last = last->next;
-	}
-	last->next = newNode;
-	newNode->prev = last;
-	return;
-}
-void customerList::deleteNode(Node** head, Node* del) 
-{
-	if (*head == NULL || del == NULL)
-	{
-		return;
-	}
-	if (*head == del) // if the node i want to delete is first, change head to it's next then delete it
-	{
-		*head = del->next;
+		head = del->next;
 	}
 	if (del->next != NULL) // if the node i want to delete is not the last one, change the next node's prev to the previous node of the one i want to delete
 	{
@@ -91,5 +143,6 @@ void customerList::deleteNode(Node** head, Node* del)
 		del->prev->next = del->next;
 	}
 	delete(del);
+
 	return;
 }

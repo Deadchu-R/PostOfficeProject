@@ -9,15 +9,23 @@ class customerList
 {
 
    public:
-   void addToQueue(Customer customer);
+	   customerList()
+	   {
+		   head = NULL;
+	   }
+   void setQueueOrder(Customer customer);
+   void ageSort(Customer customer);
+   void sortByActionType(Node* current,Customer customer);
    void printList();
-	void push(Node** head, Customer customerData);
+	void push(Customer customerData);
 	void insertAfter(Node* prev_node, Customer customerData);
 	void append(Node** head, Customer customerData);
-	void deleteNode(Node** head, Node* del);
+	void deleteNode(Node* del);
+	Node* findNode(int ID);
 
 private:
 	Node* head;
+
 	
 };
 
