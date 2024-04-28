@@ -14,8 +14,9 @@ class customerList
 		   head = NULL;
 	   }
    void setQueueOrder(Customer customer);
-   void ageSort(Customer customer);
-   void sortByActionType(Node* current,Customer customer);
+   void sortCustomers();
+   Node* sortByActionType(Node* current);
+   Node* insertSorted(Node* head, Node* newNode);
    void printList();
 	void push(Customer customerData);
 	void insertAfter(Node* prev_node, Customer customerData);
