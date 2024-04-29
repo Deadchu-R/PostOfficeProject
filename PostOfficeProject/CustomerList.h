@@ -5,6 +5,7 @@
 #include "Customer.h"
 #include "Node.h"
 
+
 class customerList
 {
 
@@ -15,7 +16,8 @@ class customerList
 	   }
    void setQueueOrder(Customer customer);
    void sortCustomers();
-   Node* sortByActionType(Node* current);
+   Node* sortByActionType(Node* specifiedHead);
+   void sortByAge(Node* current);
    Node* insertSorted(Node* head, Node* newNode);
    void printList();
 	void push(Customer customerData);
@@ -23,9 +25,15 @@ class customerList
 	void append(Node** head, Customer customerData);
 	void deleteNode(Node* del);
 	Node* findNode(int ID);
+	Node* findNodeByActionType(int actionType, Node* fromHere = head);
 
 private:
-	Node* head;
+	Node* head = nullptr;
+	Node* seniorHead = nullptr;
+	Node* youngerHead = nullptr;
+	int y;
+	//PostOfficeLogic postOfficeLogic;
+	
 
 	
 };

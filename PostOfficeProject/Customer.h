@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <ctime>
+#include "MyTime.h"
 #include <iostream>
 using namespace std;
 class Customer // aka data class
@@ -13,9 +14,9 @@ class Customer // aka data class
 	int age();
 	void setCustomerHour();
 	int getCustomerHour();
-	tm getCurrentTime();
 
 private:
 	int customerHour = 0;
+	MyTime time;
 };
 

@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Customer.cpp" />
     <ClCompile Include="CustomerList.cpp" />
+    <ClCompile Include="MyTime.cpp" />
     <ClCompile Include="PostOfficeLogic.cpp" />
     <ClCompile Include="PostOfficeProject.cpp" />
     <ClCompile Include="Queue.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Customer.h" />
     <ClInclude Include="CustomerList.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="MyTime.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PostOfficeLogic.h" />
     <ClInclude Include="Queue.h" />

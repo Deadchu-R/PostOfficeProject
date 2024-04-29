@@ -16,13 +16,16 @@ void customerList::setQueueOrder(Customer customer)
 /// </summary>
 void customerList::sortCustomers()
 {
-	Node* current = head;
-	Node* seniorHead = nullptr;
-	Node* youngerHead = nullptr;
+	sortByAge(head);
+	//seniorHead = sortByActionType(seniorHead);
+	//youngerHead = sortByActionType(youngerHead);
 
+
+}
+void customerList::sortByAge(Node* current)
+{
 	while (current != nullptr)
 	{
-		
 		Node* nextNode = current->next;
 		if (current->data.age() >= 65)
 		{
@@ -33,41 +36,18 @@ void customerList::sortCustomers()
 		else
 		{
 			current->next = youngerHead;
-			if (youngerHead != nullptr)
-				youngerHead->prev = current;
+			if (youngerHead != nullptr) youngerHead->prev = current;
 			youngerHead = current;
 		}
 		current = nextNode;
 	}
-
-	seniorHead = sortByActionType(seniorHead);
-	youngerHead = sortByActionType(youngerHead);
-
-	if (seniorHead != nullptr)
-	{
-		head = seniorHead;
-		while (seniorHead->next != nullptr)	seniorHead = seniorHead->next;
-		seniorHead->next = youngerHead;
-	}
-	else
-	{
-		head = youngerHead;
-	}
-
-	current = head;
-	while (current->next != nullptr)
-	{
-		current->next->prev = current;
-		current = current->next;
-	}
 }
-
-Node* customerList::sortByActionType(Node* head)
+Node* customerList::sortByActionType(Node* specifiedHead)
 {
-	if (head == nullptr || head->next == nullptr) return head;
+	if (specifiedHead == nullptr || specifiedHead->next == nullptr) return specifiedHead;
 
 	Node* sortedHead = nullptr;
-	Node* current = head;
+	Node* current = specifiedHead;
 
 	while (current != nullptr)
 	{
@@ -79,16 +59,16 @@ Node* customerList::sortByActionType(Node* head)
 	return sortedHead;
 }
 
-Node* customerList::insertSorted(Node* head, Node* newNode)
+Node* customerList::insertSorted(Node* sortedHead, Node* newNode)
 {
-	if (head == nullptr || newNode->data.actionType < head->data.actionType)
+	if (sortedHead == nullptr || newNode->data.actionType < sortedHead->data.actionType)
 	{
-		newNode->next = head;
-		if (head != nullptr) head->prev = newNode;
+		newNode->next = sortedHead;
+		if (sortedHead != nullptr) sortedHead->prev = newNode;
 		return newNode;
 	}
 
-	Node* current = head;
+	Node* current = sortedHead;
 	while (current->next != nullptr && current->next->data.actionType <= newNode->data.actionType)
 	{
 		current = current->next;
@@ -99,7 +79,7 @@ Node* customerList::insertSorted(Node* head, Node* newNode)
 	current->next = newNode;
 	newNode->prev = current;
 
-	return head;
+	return sortedHead;
 }
 void customerList::push(Customer customerData)
 {
@@ -126,6 +106,24 @@ Node* customerList::findNode(int ID)
 	while (current != nullptr)
 	{
 		if (current->data.ID == ID)
+		{
+			return current;
+		}
+		current = current->next;
+	}
+	return NULL;
+}
+/// <summary>
+/// this method will return the 1st node with the specified action type
+/// </summary>
+/// <param name="actionType"></param>
+/// <returns></returns>
+Node* customerList::findNodeByActionType(int actionType, Node* fromHere)
+{
+	Node* current = head;
+	while (current != nullptr)
+	{
+		if (current->data.actionType == actionType)
 		{
 			return current;
 		}

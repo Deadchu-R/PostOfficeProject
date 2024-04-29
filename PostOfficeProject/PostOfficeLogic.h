@@ -1,9 +1,11 @@
 #pragma once
 #include "Customer.h"
 #include "CustomerList.h"
+#include "MyTime.h"
 #include <iostream>
 #include <fstream>
 #include <string>
+
 using namespace std;
 class PostOfficeLogic
 {
@@ -11,13 +13,15 @@ public:
 	void runPostOffice();
 	bool running = true;
 private:
+	MyTime time;
 	customerList listOfCustomers;
 	string nameSymbol = "$";
 	string IDSymbol = "~";
 	string yearSymbol = "%";
-	int currentYear;
 	int officerCount;
+	int currentYear = time.getCurrentYear(); 
 	int maxAge = 150;
+	int seniorAge = 68;
 	int customersInQueue = 0;
 	void setOfficeSettings();
 	void searchInCustomersQueue(int ID);
@@ -33,5 +37,8 @@ private:
 	Customer findCustomer(int ID);
 	Customer setCustomerValues(string line);
 	string findDataBySymbol(string line, string symbol);
+public:
+	int getSeniorAge();
+
 };
 

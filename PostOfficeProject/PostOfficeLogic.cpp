@@ -1,10 +1,10 @@
 #include "PostOfficeLogic.h"
 
 
+
 using namespace std;
 void PostOfficeLogic::runPostOffice()
 {
-	
 	system("CLS"); // Console.Clear c++ editon
 	cout << "customers in queue: " << customersInQueue << endl;
 	setOfficeSettings();
@@ -82,9 +82,12 @@ void PostOfficeLogic::customerActions()
 		}
 	
 }
+/// <summary>
+/// adjusting the settings of the office according to the config file
+/// </summary>
 void PostOfficeLogic::setOfficeSettings()
 {
-	// will adjust setting according to config file
+
 	fstream config("OfficeConfig.txt");
 	string line;
 	if (config.is_open())
@@ -96,11 +99,15 @@ void PostOfficeLogic::setOfficeSettings()
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
 				cout << "officerCount: " << officerCount << endl;
 			}
-			if (line.find("currentYear") != string::npos)
+			if (line.find("seniorAge") != string::npos)
 			{
-				currentYear = stoi(line.substr(line.find("=") + 1));
-				cout << "current year is: " << currentYear << endl;
-
+				seniorAge = stoi(line.substr(line.find("=") + 1));
+				cout << "senrior age is: " << seniorAge << endl;
+			}
+			if (line.find("maxAge") != string::npos)
+			{
+				maxAge = stoi(line.substr(line.find("=") + 1));
+				cout << "max age is: " << maxAge << endl;
 			}
 		}
 		config.close();
@@ -165,6 +172,10 @@ void PostOfficeLogic::addToQueue(int ID)
 	cout << "if you are a new customer." << endl;
 	waitForInput();
 	runPostOffice();
+}
+int PostOfficeLogic::getSeniorAge()
+{
+	return seniorAge;
 }
 Customer PostOfficeLogic::createNewCustomer(int ID)
 {
