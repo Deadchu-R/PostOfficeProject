@@ -2,16 +2,9 @@
 
 int main()
 {
-    // create an instance of PostOfficeLogic
-    PostOfficeLogic postOfficeLogic;
-    // will adjust setting according to config file
-    // run the post office logic
-    postOfficeLogic.runPostOffice();
-    std::cout << "Hello World!\n";
-
+    PostOfficeLogic::getInstance().setOfficeSettings();
+    PostOfficeLogic::getInstance().runPostOffice();
 }
-// create a class for post office itself (aka logic)
-// create a class for post office worker
-// create a class for Customer
+
 
 

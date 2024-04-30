@@ -113,23 +113,42 @@ Node* customerList::findNode(int ID)
 	}
 	return NULL;
 }
+Customer customerList::findCustomerByActionType(int actionType, bool elderly)
+{
+	Node* temp;
+	if (elderly)
+	{
+		temp = findNodeByActionType(actionType, seniorHead);
+	}
+	else
+	{
+		temp = findNodeByActionType(actionType, youngerHead);
+	}
+	return temp->data;
+}
 /// <summary>
 /// this method will return the 1st node with the specified action type
 /// </summary>
 /// <param name="actionType"></param>
 /// <returns></returns>
-Node* customerList::findNodeByActionType(int actionType, Node* fromHere)
+Node* customerList::findNodeByActionType(int actionType, Node* fromHere) 
 {
-	Node* current = head;
+	//cout << "finding node by action type" << endl;
+	Node* current;
+	if (fromHere != nullptr) current = fromHere;
+	else current = head;
 	while (current != nullptr)
 	{
 		if (current->data.actionType == actionType)
 		{
 			return current;
 		}
+		//cout << "current actionType is: " << current->data.actionType << endl;
+		//cout << "officerActionType is: " << actionType << endl;
 		current = current->next;
 	}
-	return NULL;
+	 Node* node = findNodeByActionType(actionType, head); // if the node is not found in the specified list, search from head instead
+	 return node;
 }
 void customerList::printList()
 {

@@ -1,13 +1,53 @@
 #include "PostOfficeLogic.h"
-
-
-
 using namespace std;
+PostOfficeLogic::PostOfficeLogic()
+{
+	setOfficeSettings();
+}
+PostOfficeLogic::~PostOfficeLogic()
+{
+}
+/// <summary>
+/// adjusting the settings of the office according to the config file
+/// </summary>
+void PostOfficeLogic::setOfficeSettings()
+{
+	fstream config("OfficeConfig.txt");
+	string line;
+	if (config.is_open())
+	{
+		while (getline(config, line))
+		{
+			if (line.find("officerCount") != string::npos)
+			{
+				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
+				for (int i = 1; i < officerCount; i++)
+				{
+					officers.push_back(Officer(i));
+				}
+				cout << "officerCount: " << officerCount << endl;
+			}
+			if (line.find("seniorAge") != string::npos)
+			{
+				seniorAge = stoi(line.substr(line.find("=") + 1));
+				cout << "senrior age is: " << seniorAge << endl;
+			}
+			if (line.find("maxAge") != string::npos)
+			{
+				maxAge = stoi(line.substr(line.find("=") + 1));
+				cout << "max age is: " << maxAge << endl;
+			}
+		}
+		config.close();
+	}
+	else
+	{
+		cout << "Unable to open file, please check config.txt";
+	}
+}
 void PostOfficeLogic::runPostOffice()
 {
 	system("CLS"); // Console.Clear c++ editon
-	cout << "customers in queue: " << customersInQueue << endl;
-	setOfficeSettings();
 	while (running)
 	{
 		cout << "Welcome to the Post Office, choose division or exit" << endl;
@@ -19,7 +59,13 @@ void PostOfficeLogic::runPostOffice()
 		switch (input)
 		{
 		case 1:
-			officerActions();
+			if (customersInQueue == 0)
+			{
+				cout << "there are no customers in queue" << endl;
+				waitForInput();
+				runPostOffice();
+			}
+			else officerActions();
 			break;
 		case 2:
 			customerActions();
@@ -38,6 +84,45 @@ void PostOfficeLogic::runPostOffice()
 }
 void PostOfficeLogic::officerActions()
 {
+	Customer customer;
+	if (currentOfficer < officerCount-1 || !officers[currentOfficer].isAvailable) currentOfficer++;
+	else currentOfficer = 1;
+	Officer officer = officers[currentOfficer - 1];
+	bool officerActionRunning = true;
+	while (officerActionRunning)
+	{
+		system("CLS");
+		cout << "Welcome Officer: " << officer.getOfficerNumber()<<", please choose an action" << endl;
+		cout << "there are: " << customersInQueue << " customers in queue" << endl;
+		cout << "1. help next customer" << endl;
+		cout << "2. Exit" << endl;
+		int input;
+		cin >> input;
+		switch (input)
+		{
+		case 1:
+			cout << "1" << endl;
+			if (officer.shouldHelpElderly == false) customer = listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly);
+			cout << "2" << endl;
+			if (customer.isElderly()) officer.shouldHelpElderly = false;	
+			else officer.shouldHelpElderly = true;
+			cout << "3" << endl;
+			officer.isAvailable = false;
+			officer.helpCustomer(customer);
+		    // customer =	listOfCustomers.findCustomerByActionType(officer.actionType);
+			//officers[currentOfficer-1].helpNextCustomer();
+
+			break;
+		case 2:
+			officerActionRunning = false;
+			break;
+		default:
+			cout << "didn't not recive a valid input" << endl;
+			waitForInput();
+			officerActions();
+			break;
+		}
+	}
 }
 void PostOfficeLogic::customerActions()
 {
@@ -82,42 +167,7 @@ void PostOfficeLogic::customerActions()
 		}
 	
 }
-/// <summary>
-/// adjusting the settings of the office according to the config file
-/// </summary>
-void PostOfficeLogic::setOfficeSettings()
-{
 
-	fstream config("OfficeConfig.txt");
-	string line;
-	if (config.is_open())
-	{
-		while (getline(config, line))
-		{
-			if (line.find("officerCount") != string::npos)
-			{
-				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
-				cout << "officerCount: " << officerCount << endl;
-			}
-			if (line.find("seniorAge") != string::npos)
-			{
-				seniorAge = stoi(line.substr(line.find("=") + 1));
-				cout << "senrior age is: " << seniorAge << endl;
-			}
-			if (line.find("maxAge") != string::npos)
-			{
-				maxAge = stoi(line.substr(line.find("=") + 1));
-				cout << "max age is: " << maxAge << endl;
-			}
-		}
-		config.close();
-	}
-	else
-	{
-		cout << "Unable to open file, please check config.txt";
-	}
-
-}
 void PostOfficeLogic::searchInCustomersQueue(int ID)
 {
 	if (listOfCustomers.findNode(ID) != nullptr)
@@ -227,6 +277,7 @@ Customer PostOfficeLogic::customerChooseAction(Customer customer)
 		if (isNumber(input) && stoi(input) < 4 && stoi(input) > 0)
 		{
 			cout << "you chose number:" << input  << endl;
+			customer.actionType = stoi(input);
 			choseAction = true;
 			actionNum = stoi(input);
 		}

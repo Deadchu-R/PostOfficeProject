@@ -24,8 +24,9 @@ class customerList
 	void insertAfter(Node* prev_node, Customer customerData);
 	void append(Node** head, Customer customerData);
 	void deleteNode(Node* del);
+	Customer findCustomerByActionType(int actionType, bool elderly);
 	Node* findNode(int ID);
-	Node* findNodeByActionType(int actionType, Node* fromHere = head);
+	Node* findNodeByActionType(int actionType, Node* fromHere );
 
 private:
 	Node* head = nullptr;

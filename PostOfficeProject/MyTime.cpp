@@ -17,9 +17,20 @@ int MyTime::getCurrentSecond()
 {
 	return getCurrentTime().tm_sec;
 }
-int MyTime::currentTimeAsFormat()
+int MyTime::currentTimeAsInt()
 {
 	return (getCurrentTime().tm_hour * 10000) + (getCurrentTime().tm_min * 100) + getCurrentTime().tm_sec;
+}
+string MyTime::currentTimeAsFormattedString()
+{
+	return to_string(getCurrentTime().tm_hour) + ":" + to_string(getCurrentTime().tm_min) + ":" + to_string(getCurrentTime().tm_sec);
+}
+string MyTime::timeAsIntToFormattedString(int timeAsInt)
+{
+	int hour = timeAsInt / 10000;
+	int minute = (timeAsInt % 10000) / 100;
+	int second = timeAsInt % 100;
+	return to_string(hour) + ":" + to_string(minute) + ":" + to_string(second);
 }
 tm MyTime::getCurrentTime()
 {

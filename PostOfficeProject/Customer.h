@@ -7,13 +7,15 @@ using namespace std;
 class Customer // aka data class
 {
 	public:
-	int birthYear = 1998;
+    int birthYear = 1998;
 	string name = "John Doe";
 	int ID = 500000000; // lets say 9 digit number
 	int actionType = 0;
 	int age();
+	bool isElderly();
 	void setCustomerHour();
 	int getCustomerHour();
+	string getCustomerHourAsFormattedString();
 
 private:
 	int customerHour = 0;

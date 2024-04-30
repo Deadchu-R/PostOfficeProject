@@ -1,6 +1,8 @@
 #pragma once
 #include <ctime>
 #include <iostream>
+#include <string>
+using namespace std;
 class MyTime
 {
 public:
@@ -9,6 +11,9 @@ public:
     int getCurrentHour();
     int getCurrentMinute();
     int getCurrentSecond();
-    int currentTimeAsFormat();
+    int currentTimeAsInt();
+    string currentTimeAsFormattedString();
+    string timeAsIntToFormattedString(int timeAsInt);
+
 };
 
