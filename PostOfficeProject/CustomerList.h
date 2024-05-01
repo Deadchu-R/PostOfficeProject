@@ -33,6 +33,7 @@ private:
 	Node* seniorHead = nullptr;
 	Node* youngerHead = nullptr;
 	int y;
+	int maxActions = 4;
 	//PostOfficeLogic postOfficeLogic;
 	
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "Customer.h"
+#include "MyTime.h"
 #include <fstream>
 using namespace std;
 class Officer
@@ -14,6 +15,8 @@ class Officer
 	string dataFolderPath = "Data\\OfficersData\\";
 	void helpCustomer(Customer customer);
 	int getOfficerNumber();
+	int maxActions = 4;
+	void raiseOfficerActionType();
 	int actionType = 1;
 
 private:

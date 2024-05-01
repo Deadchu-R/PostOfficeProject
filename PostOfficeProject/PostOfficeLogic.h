@@ -31,6 +31,7 @@ private:
 	string nameSymbol = "$";
 	string IDSymbol = "~";
 	string yearSymbol = "%";
+	int maxActions = 4;
 	int currentOfficer = 0;
 	int officerCount;
 	int currentYear = time.getCurrentYear(); 

@@ -24,6 +24,7 @@ void PostOfficeLogic::setOfficeSettings()
 				for (int i = 1; i < officerCount; i++)
 				{
 					officers.push_back(Officer(i));
+					officers[i - 1].maxActions = maxActions;
 				}
 				cout << "officerCount: " << officerCount << endl;
 			}
@@ -91,6 +92,7 @@ void PostOfficeLogic::officerActions()
 	bool officerActionRunning = true;
 	while (officerActionRunning)
 	{
+		bool found = false;
 		system("CLS");
 		cout << "Welcome Officer: " << officer.getOfficerNumber()<<", please choose an action" << endl;
 		cout << "there are: " << customersInQueue << " customers in queue" << endl;
@@ -102,16 +104,32 @@ void PostOfficeLogic::officerActions()
 		{
 		case 1:
 			cout << "1" << endl;
-			if (officer.shouldHelpElderly == false) customer = listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly);
-			cout << "2" << endl;
-			if (customer.isElderly()) officer.shouldHelpElderly = false;	
+			while (!found)
+			{
+				if (officer.shouldHelpElderly == false)
+				{
+					cin.get();
+					if (listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly).actionType == -1)
+					{		
+						officer.raiseOfficerActionType();
+					}
+					else
+					{
+						customer = listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly);
+						found = true;
+					}
+				}
+			}
+			if (customer.isElderly()) officer.shouldHelpElderly = false;
+			if (officer.actionType != customer.actionType)
+			{
+				officer.actionType = customer.actionType;
+				officer.raiseOfficerActionType();
+			}
 			else officer.shouldHelpElderly = true;
 			cout << "3" << endl;
 			officer.isAvailable = false;
 			officer.helpCustomer(customer);
-		    // customer =	listOfCustomers.findCustomerByActionType(officer.actionType);
-			//officers[currentOfficer-1].helpNextCustomer();
-
 			break;
 		case 2:
 			officerActionRunning = false;

@@ -5,10 +5,10 @@ void customerList::setQueueOrder(Customer customer)
 	push(customer);
 	sortCustomers();
 	printList();
-	
+
 	//if (head == nullptr) push(customer);
    // else ageSort(customer);
-	
+
 }
 /// <summary>
 /// this sort function will sort the customers by age and then by action type
@@ -115,6 +115,7 @@ Node* customerList::findNode(int ID)
 }
 Customer customerList::findCustomerByActionType(int actionType, bool elderly)
 {
+
 	Node* temp;
 	if (elderly)
 	{
@@ -124,6 +125,13 @@ Customer customerList::findCustomerByActionType(int actionType, bool elderly)
 	{
 		temp = findNodeByActionType(actionType, youngerHead);
 	}
+	if (temp == nullptr)
+	{
+		cout << "Customer not found" << endl;
+		Customer tempCustomer;
+		tempCustomer.actionType = -1;
+		return tempCustomer;
+	}
 	return temp->data;
 }
 /// <summary>
@@ -131,24 +139,26 @@ Customer customerList::findCustomerByActionType(int actionType, bool elderly)
 /// </summary>
 /// <param name="actionType"></param>
 /// <returns></returns>
-Node* customerList::findNodeByActionType(int actionType, Node* fromHere) 
+Node* customerList::findNodeByActionType(int actionType, Node* fromHere)
 {
-	//cout << "finding node by action type" << endl;
+	bool found = false;
+	Node* startPoint;
 	Node* current;
-	if (fromHere != nullptr) current = fromHere;
-	else current = head;
-	while (current != nullptr)
-	{
-		if (current->data.actionType == actionType)
-		{
-			return current;
-		}
-		//cout << "current actionType is: " << current->data.actionType << endl;
-		//cout << "officerActionType is: " << actionType << endl;
-		current = current->next;
-	}
-	 Node* node = findNodeByActionType(actionType, head); // if the node is not found in the specified list, search from head instead
-	 return node;
+	if (fromHere != nullptr) startPoint = fromHere;
+	else startPoint = head;
+	current = startPoint;
+			while (current != nullptr)
+			{
+				if (current->data.actionType == actionType)
+				{
+					return current;
+				}
+				cout << "searching for: " << actionType << endl;
+				cout << "current action type: " << current->data.actionType << " currentType: " << current->data.isElderly() << endl;
+				cin.get();
+				current = current->next;
+			}
+		return nullptr; 
 }
 void customerList::printList()
 {
