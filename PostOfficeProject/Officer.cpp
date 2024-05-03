@@ -15,14 +15,11 @@ Officer::~Officer()
 }
 void Officer::helpCustomer(Customer customer)
 {
-	ofstream data(officerDataName);
-
-
+	
+	ofstream data(officerDataName, ios::app);
 	// check if the config file exists
 	if (data.is_open())
 	{
-		//data << customer.getCustomerHourAsFormattedString() << "- Customer: " << customer.ID << " elderly: " << customer.isElderly() << " actionType: " << customer.actionType << endl;
-	//	data.close();
 		writeToData(data, customer);
 	}
 	else
@@ -31,8 +28,6 @@ void Officer::helpCustomer(Customer customer)
 		if (data.is_open())
 		{
 			writeToData(data, customer);
-		//	data << customer.getCustomerHourAsFormattedString() << "- Customer: " << customer.ID << " elderly: " << customer.isElderly() << " actionType: " << customer.actionType << endl;
-			//data.close();
 		}
 		else
 		{
@@ -45,13 +40,11 @@ void Officer::raiseOfficerActionType()
 {
 	if (actionType >= maxActions)
 	{
-		cout << "debug nonsense at raiseActionType" << endl;
 		cin.get();
 		actionType = 1;
 	}
 	else
 	{
-		cout << "debug nonsense at raiseActionType 2" << endl;
 		actionType = actionType + 1;
 	}
 }

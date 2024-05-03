@@ -21,10 +21,10 @@ void PostOfficeLogic::setOfficeSettings()
 			if (line.find("officerCount") != string::npos)
 			{
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
-				for (int i = 1; i < officerCount; i++)
+				for (int i =0; i < officerCount; i++)
 				{
 					officers.push_back(Officer(i));
-					officers[i - 1].maxActions = maxActions;
+					officers[i].maxActions = maxActions;
 				}
 				cout << "officerCount: " << officerCount << endl;
 			}
@@ -46,6 +46,9 @@ void PostOfficeLogic::setOfficeSettings()
 		cout << "Unable to open file, please check config.txt";
 	}
 }
+/// <summary>
+/// this method will run the post office
+/// </summary>
 void PostOfficeLogic::runPostOffice()
 {
 	system("CLS"); // Console.Clear c++ editon
@@ -83,12 +86,15 @@ void PostOfficeLogic::runPostOffice()
 	customerActions();
 
 }
+/// <summary>
+/// this method contains the actions of the officer
+/// </summary>
 void PostOfficeLogic::officerActions()
 {
 	Customer customer;
-	if (currentOfficer < officerCount-1 || !officers[currentOfficer].isAvailable) currentOfficer++;
-	else currentOfficer = 1;
-	Officer officer = officers[currentOfficer - 1];
+	if (currentOfficer < officerCount || !officers[currentOfficer].isAvailable) currentOfficer++;
+	else currentOfficer =0;
+	Officer officer = officers[currentOfficer];
 	bool officerActionRunning = true;
 	while (officerActionRunning)
 	{
@@ -127,9 +133,9 @@ void PostOfficeLogic::officerActions()
 				officer.raiseOfficerActionType();
 			}
 			else officer.shouldHelpElderly = true;
-			cout << "3" << endl;
 			officer.isAvailable = false;
 			officer.helpCustomer(customer);
+			officerActionRunning = false;
 			break;
 		case 2:
 			officerActionRunning = false;
@@ -142,6 +148,9 @@ void PostOfficeLogic::officerActions()
 		}
 	}
 }
+/// <summary>
+/// this method contains the actions of the customer
+/// </summary>
 void PostOfficeLogic::customerActions()
 {
 	bool customerActionRunning = true;
@@ -186,6 +195,10 @@ void PostOfficeLogic::customerActions()
 	
 }
 
+/// <summary>
+/// this method will search for customers in queue by their ID
+/// </summary>
+/// <param name="ID">the ID of the customer</param>
 void PostOfficeLogic::searchInCustomersQueue(int ID)
 {
 	if (listOfCustomers.findNode(ID) != nullptr)
@@ -225,6 +238,10 @@ void PostOfficeLogic::searchInCustomersQueue(int ID)
 	}
 
 }
+/// <summary>
+/// this method will add the customer to the queue by his ID
+/// </summary>
+/// <param name="ID">The ID of the customer</param>
 void PostOfficeLogic::addToQueue(int ID)
 {
 	Customer customer;
@@ -241,10 +258,19 @@ void PostOfficeLogic::addToQueue(int ID)
 	waitForInput();
 	runPostOffice();
 }
+/// <summary>
+/// this method will return the senior age
+/// </summary>
+/// <returns></returns>
 int PostOfficeLogic::getSeniorAge()
 {
 	return seniorAge;
 }
+/// <summary>
+/// this method will create a new customer and add it to the customers.txt file
+/// </summary>
+/// <param name="ID">This is the ID of the customer</param>
+/// <returns></returns>
 Customer PostOfficeLogic::createNewCustomer(int ID)
 {
 	Customer customer;
@@ -279,6 +305,11 @@ Customer PostOfficeLogic::createNewCustomer(int ID)
 	return customer;
 	
 }
+/// <summary>
+/// this method is for the customer to choose action
+/// </summary>
+/// <param name="customer">Is the customer itself</param>
+/// <returns>The customer with his Action defined</returns>
 Customer PostOfficeLogic::customerChooseAction(Customer customer)
 {
 	bool choseAction = false;
@@ -307,6 +338,11 @@ Customer PostOfficeLogic::customerChooseAction(Customer customer)
 	}
 	return customer;
 }
+/// <summary>
+/// this method will find the customer by his ID
+/// </summary>
+/// <param name="ID">The ID of the customer</param>
+/// <returns>will return cerain customer</returns>
 Customer PostOfficeLogic::findCustomer(int ID)
 {
 	Customer customer;
@@ -358,14 +394,14 @@ Customer PostOfficeLogic::findCustomer(int ID)
 	else
 	{
 		cout << "Error: Unable to open file, please check Customers.txt";
-		
 	}
-	// will search for customer in an outside list of customers
-	// if customer exists , return customer
-	// if customer does not exist, prompt user to enter their information
-	//customer.ID = ID;
 	return customer;
 }
+/// <summary>
+/// this method will set the values of the customer (ID, Name, BirthYear))
+/// </summary>
+/// <param name="line">is the line of the txt file which this method looks at</param>
+/// <returns>will return redefined customer</returns>
 Customer PostOfficeLogic::setCustomerValues(string line)
 {
 	// Format Symbols: Format Symbols: ~ID~, $Name$, %Year% 
@@ -399,6 +435,9 @@ bool PostOfficeLogic::isNumber(string s)
 	}
 	return true;
 }
+/// <summary>
+/// this method will wait for input before continuing
+/// </summary>
 void PostOfficeLogic::waitForInput()
 {
 	cout << "press any key to return" << endl;
