@@ -12,7 +12,8 @@ PostOfficeLogic::~PostOfficeLogic()
 /// </summary>
 void PostOfficeLogic::setOfficeSettings()
 {
-	fstream config("OfficeConfig.txt");
+	fstream config(officeSettingsFolderPath);
+	//fstream config("OfficeConfig.txt");
 	string line;
 	if (config.is_open())
 	{
@@ -121,7 +122,7 @@ void PostOfficeLogic::officerActions()
 			else officer.shouldHelpElderly = true;
 			officer.isAvailable = false;
 			// -------------------------------------------------------------
-#pragma endregion SetOfficerValues
+            #pragma endregion SetOfficerValues
 			officer.helpCustomer(customer);
 			removeCustomerFromQueue(customer);
 			cin.get(); /// for debuging
@@ -410,7 +411,8 @@ Customer PostOfficeLogic::customerChooseAction(Customer customer)
 Customer PostOfficeLogic::findCustomer(int ID)
 {
 	Customer customer;
-	fstream customers("Customers.txt");
+	fstream customers(officeCustomersFolderPath);
+	//fstream customers("Customers.txt");
 	string line;
 	bool found = false;
 	if (customers.is_open())

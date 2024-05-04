@@ -27,6 +27,8 @@ public:
 	void setOfficeSettings();
 private:
 	MyList customersQueueSTL;
+	string officeSettingsFolderPath = "Settings\\OfficeConfig.txt";
+	string officeCustomersFolderPath = "Data\\Customers.txt";
 	bool nodeMode = false;
 	bool isCustomerInQueueSTL(int ID);
 	MyTime time;
