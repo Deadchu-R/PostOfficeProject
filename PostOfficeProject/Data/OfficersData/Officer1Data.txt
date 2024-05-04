@@ -1,1 +1,14 @@
-13:3:18- Customer: 206697450 elderly: 0 actionType: 1
+13:53:31- Customer: 206697450 elderly: 0 actionType: 1
+13:54:21- Customer: 206697450 elderly: 0 actionType: 1
+13:55:58- Customer: 206697450 elderly: 0 actionType: 1
+13:57:5- Customer: 206697450 elderly: 0 actionType: 1
+13:58:10- Customer: 206697450 elderly: 0 actionType: 1
+13:59:3- Customer: 206697450 elderly: 0 actionType: 1
+14:5:13- Customer: 206697450 elderly: 0 actionType: 1
+14:8:46- Customer: 206697450 elderly: 0 actionType: 1
+14:9:43- Customer: 206697450 elderly: 0 actionType: 1
+14:12:28- Customer: 206697450 elderly: 0 actionType: 1
+14:14:3- Customer: 206697450 elderly: 0 actionType: 1
+14:17:28- Customer: 206697450 elderly: 0 actionType: 1
+14:18:4- Customer: 206697450 elderly: 0 actionType: 1
+14:20:56- Customer: 206697450 elderly: 0 actionType: 1

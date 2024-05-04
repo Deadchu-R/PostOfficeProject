@@ -135,6 +135,17 @@ void PostOfficeLogic::officerActions()
 			else officer.shouldHelpElderly = true;
 			officer.isAvailable = false;
 			officer.helpCustomer(customer);
+			if (listOfCustomers.deleteNode(listOfCustomers.findNode(customer.ID)) == true)
+			{
+				cout << "customer deleted" << endl;
+				listOfCustomers.sortCustomers();
+			}
+			else {
+				cout << "customer not deleted" << endl;
+			}
+			cin.get(); /// for debuging
+				
+			customersInQueue--;
 			officerActionRunning = false;
 			break;
 		case 2:

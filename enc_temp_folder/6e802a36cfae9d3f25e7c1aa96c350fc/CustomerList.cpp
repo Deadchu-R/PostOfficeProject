@@ -22,7 +22,6 @@ void customerList::sortByAge(Node* currentHead)
 {
 	Node* current = currentHead;
 	if (current == nullptr) current = head;
-
 	while (current != nullptr)
 	{
 		Node* nextNode = current->next;

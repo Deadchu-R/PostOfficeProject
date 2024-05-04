@@ -16,11 +16,11 @@ class customerList
 	   }
    void setQueueOrder(Customer customer);
    void sortCustomers();
-   void sortByAge(Node* current);
+   void sortByAge(Node* currentHead);
    Node* insertSorted(Node* head, Node* newNode);
    void printList();
 	void push(Customer customerData);
-	void deleteNode(Node* del);
+	bool deleteNode(Node* del);
 	Customer findCustomerByActionType(int actionType, bool elderly);
 	Node* findNode(int ID);
 	Node* findNodeByActionType(int actionType, Node* fromHere );
