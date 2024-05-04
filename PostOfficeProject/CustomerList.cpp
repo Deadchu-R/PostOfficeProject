@@ -4,11 +4,6 @@ void customerList::setQueueOrder(Customer customer)
 {
 	push(customer);
 	sortCustomers();
-	//printList();
-
-	//if (head == nullptr) push(customer);
-   // else ageSort(customer);
-
 }
 /// <summary>
 /// this sort function will sort the customers by age and then by action type
@@ -26,7 +21,7 @@ void customerList::sortByAge(Node* currentHead)
 	while (current != nullptr)
 	{
 		Node* nextNode = current->next;
-		if (current->data.age() >= 65)
+		if (current->data.isElderly())
 		{
 			current->next = seniorHead;
 			if (seniorHead != nullptr) seniorHead->prev = current;
@@ -108,8 +103,6 @@ Customer customerList::findCustomerByActionType(int actionType, bool elderly)
 	if (tempHead == nullptr || tempHead->data.actionType == -572662307)
 	{
 		tempHead = head;
-		//cerr << "tempHead is null or corrupted" << endl;
-	//	throw runtime_error("seniorHead is null or corrupted");
 	}
 	 temp = findNodeByActionType(actionType, tempHead);
 	if (temp == nullptr)

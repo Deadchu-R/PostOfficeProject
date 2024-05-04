@@ -1,1 +1,1 @@
-14:19:8- Customer: 206697450 elderly: 0 actionType: 1
+18:57:16- Customer: 123456789 elderly: 0 actionType: 3

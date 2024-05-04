@@ -21,7 +21,7 @@ void PostOfficeLogic::setOfficeSettings()
 			if (line.find("officerCount") != string::npos)
 			{
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
-				for (int i =0; i < officerCount; i++)
+				for (int i = 0; i < officerCount; i++)
 				{
 					officers.push_back(Officer(i));
 					officers[i].maxActions = maxActions;
@@ -45,12 +45,14 @@ void PostOfficeLogic::setOfficeSettings()
 	{
 		cout << "Unable to open file, please check config.txt";
 	}
+	runPostOffice();
 }
 /// <summary>
 /// this method will run the post office
 /// </summary>
 void PostOfficeLogic::runPostOffice()
 {
+
 	system("CLS"); // Console.Clear c++ editon
 	while (running)
 	{
@@ -74,7 +76,7 @@ void PostOfficeLogic::runPostOffice()
 		case 2:
 			customerActions();
 			break;
-		case 3: 
+		case 3:
 			running = false;
 			break;
 		default:
@@ -84,8 +86,8 @@ void PostOfficeLogic::runPostOffice()
 		}
 	}
 	customerActions();
-
 }
+
 /// <summary>
 /// this method contains the actions of the officer
 /// </summary>
@@ -93,14 +95,13 @@ void PostOfficeLogic::officerActions()
 {
 	Customer customer;
 	if (currentOfficer < officerCount || !officers[currentOfficer].isAvailable) currentOfficer++;
-	else currentOfficer =0;
+	else currentOfficer = 0;
 	Officer officer = officers[currentOfficer];
 	bool officerActionRunning = true;
 	while (officerActionRunning)
 	{
-		bool found = false;
 		system("CLS");
-		cout << "Welcome Officer: " << officer.getOfficerNumber()<<", please choose an action" << endl;
+		cout << "Welcome Officer: " << officer.getOfficerNumber() << ", please choose an action" << endl;
 		cout << "there are: " << customersInQueue << " customers in queue" << endl;
 		cout << "1. help next customer" << endl;
 		cout << "2. Exit" << endl;
@@ -109,23 +110,8 @@ void PostOfficeLogic::officerActions()
 		switch (input)
 		{
 		case 1:
-			cout << "1" << endl;
-			while (!found)
-			{
-				if (officer.shouldHelpElderly == false)
-				{
-					cin.get();
-					if (listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly).actionType == -1)
-					{		
-						officer.raiseOfficerActionType();
-					}
-					else
-					{
-						customer = listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly);
-						found = true;
-					}
-				}
-			}
+			customer = findNextCustomer(officer);
+            #pragma region SetOfficerValues
 			if (customer.isElderly()) officer.shouldHelpElderly = false;
 			if (officer.actionType != customer.actionType)
 			{
@@ -134,17 +120,11 @@ void PostOfficeLogic::officerActions()
 			}
 			else officer.shouldHelpElderly = true;
 			officer.isAvailable = false;
+			// -------------------------------------------------------------
+#pragma endregion SetOfficerValues
 			officer.helpCustomer(customer);
-			if (listOfCustomers.deleteNode(listOfCustomers.findNode(customer.ID)) == true)
-			{
-				cout << "customer deleted" << endl;
-				listOfCustomers.sortCustomers();
-			}
-			else {
-				cout << "customer not deleted" << endl;
-			}
+			removeCustomerFromQueue(customer);
 			cin.get(); /// for debuging
-				
 			customersInQueue--;
 			officerActionRunning = false;
 			break;
@@ -159,51 +139,95 @@ void PostOfficeLogic::officerActions()
 		}
 	}
 }
+Customer PostOfficeLogic::findNextCustomer(Officer officer)
+{
+	Customer customer;
+	bool found = false;
+	while (!found)
+	{
+		cin.get();
+		if (nodeMode == true)
+		{
+			if (listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly).actionType == -1)
+			{
+				officer.raiseOfficerActionType();
+			}
+			else
+			{
+				customer = listOfCustomers.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly);
+				found = true;
+			}
+		}
+		else if (nodeMode == false)
+		{
+			if (customersQueueSTL.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly).actionType == -1)
+			{
+				officer.raiseOfficerActionType();
+			}
+			else
+			{
+				customer = customersQueueSTL.findCustomerByActionType(officer.actionType, officer.shouldHelpElderly);
+				found = true;
+			}
+		}
+	}
+	return customer;
+}
+void PostOfficeLogic::removeCustomerFromQueue(Customer customer)
+{
+	if (nodeMode == true)
+	{
+		if (listOfCustomers.deleteNode(listOfCustomers.findNode(customer.ID)) == true)
+		{
+			cout << "customer deleted" << endl;
+			listOfCustomers.sortCustomers();
+		}
+		else
+		{
+			cout << "customer not deleted" << endl;
+		}
+	}
+	else if (nodeMode == false) customersQueueSTL.eraseCustomer(customer);
+}
 /// <summary>
 /// this method contains the actions of the customer
 /// </summary>
 void PostOfficeLogic::customerActions()
 {
 	bool customerActionRunning = true;
-		while (customerActionRunning)
+	while (customerActionRunning)
+	{
+		system("CLS");
+		string IDString;
+		int ID{};
+		cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
+		cout << "or enter 1 digit then press Enter to exit" << endl;
+		cin >> IDString;
+		if (!isNumber(IDString))
 		{
-			system("CLS");
-			string IDString;
-			int ID{};
-		
-			cout << "Welcome to the Post Office! please enter your {9 digit} ID" << std::endl;
-			cout << "or enter 1 digit then press Enter to exit" << endl;
-			cin >> IDString;
-		
-				if (!isNumber(IDString))
-				{
-					cout << "error , we only accept numbers" << endl;
-					waitForInput();
-					customerActions();
-				}
-		
-
-			ID = stoi(IDString);
-
-	
-			switch (IDString.length()) {
-			case 1:
-				std::cout << "Goodbye" << std::endl;
-				std::cout << "Exiting...";
-				customerActionRunning = false;
-				break;
-			case 9:
-				searchInCustomersQueue(ID);
-				break;
-			default:
-				cout << "ID Should be 9 digit and you inserted: " << IDString.length() << endl;
-				waitForInput();
-				customerActions();
-				break;
-			}
-
+			cout << "error , we only accept numbers" << endl;
+			waitForInput();
+			customerActions();
 		}
-	
+		ID = stoi(IDString);
+		switch (IDString.length()) {
+		case 1:
+			std::cout << "Goodbye" << std::endl;
+			std::cout << "Exiting...";
+			customerActionRunning = false;
+			break;
+		case 9:
+			searchInCustomersQueue(ID);
+			break;
+		default:
+			cout << "ID Should be 9 digit and you inserted: " << IDString.length() << endl;
+			waitForInput();
+			customerActions();
+			break;
+		}
+
+	}
+
 }
 
 /// <summary>
@@ -212,17 +236,35 @@ void PostOfficeLogic::customerActions()
 /// <param name="ID">the ID of the customer</param>
 void PostOfficeLogic::searchInCustomersQueue(int ID)
 {
-	if (listOfCustomers.findNode(ID) != nullptr)
+
+	if (listOfCustomers.findNode(ID) != nullptr || isCustomerInQueueSTL(ID))
 	{
 		cout << "you are already in the queue" << endl;
-		cout << "would you like to cancle your appointment?" << endl;
+		cout << "would you like to cancel your appointment?" << endl;
 		cout << "1. Yes" << endl;
 		cout << "2. No" << endl;
 		string input;
 		cin >> input;
 		if (input == "1")
 		{
-			listOfCustomers.deleteNode(listOfCustomers.findNode(ID));
+			if (nodeMode == true)
+			{
+				listOfCustomers.deleteNode(listOfCustomers.findNode(ID));
+			}
+			else if (nodeMode == false)
+			{
+				for (auto it = customersQueueSTL.begin(); it != customersQueueSTL.end(); )
+				{
+					if (it->ID == ID)
+					{
+						it = customersQueueSTL.erase(it);
+					}
+					else
+					{
+						++it;
+					}
+				}
+			}
 			customersInQueue--;
 			cout << "you have been removed from the queue" << endl;
 			waitForInput();
@@ -249,6 +291,17 @@ void PostOfficeLogic::searchInCustomersQueue(int ID)
 	}
 
 }
+bool PostOfficeLogic::isCustomerInQueueSTL(int ID)
+{
+	for (Customer customer : customersQueueSTL)
+	{
+		if (customer.ID == ID)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 /// <summary>
 /// this method will add the customer to the queue by his ID
 /// </summary>
@@ -256,6 +309,7 @@ void PostOfficeLogic::searchInCustomersQueue(int ID)
 void PostOfficeLogic::addToQueue(int ID)
 {
 	Customer customer;
+
 	customer = findCustomer(ID); // find the customer in customers.txt
 	system("CLS");
 	cout << "Customer ID: " << customer.ID << endl
@@ -263,7 +317,8 @@ void PostOfficeLogic::addToQueue(int ID)
 		<< "Customer Birth Year: " << customer.birthYear << endl;
 	customer = customerChooseAction(customer);
 	customer.setCustomerHour();
-	listOfCustomers.setQueueOrder(customer);
+	if (nodeMode == true)listOfCustomers.setQueueOrder(customer);
+	else if (nodeMode == false) customersQueueSTL.setQueueOrder(customer);
 	customersInQueue++;
 	cout << "if you are a new customer." << endl;
 	waitForInput();
@@ -294,16 +349,14 @@ Customer PostOfficeLogic::createNewCustomer(int ID)
 	cin >> input;
 	if (isNumber(input))
 	{
-		 year = stoi(input);
+		year = stoi(input);
 	}
-	else if (!isNumber(input) || year - currentYear < 0 || year - currentYear > maxAge) 
+	else if (!isNumber(input) || year - currentYear < 0 || year - currentYear > maxAge)
 	{
 		cout << "year is not valid, please enter a valid year";
 		waitForInput();
 		createNewCustomer(ID);
 	}
-
-
 	ofstream customers("Customers.txt", ios::app); // app is short for append
 	if (customers.is_open())
 	{
@@ -314,7 +367,7 @@ Customer PostOfficeLogic::createNewCustomer(int ID)
 	customer.name = name;
 	customer.birthYear = year;
 	return customer;
-	
+
 }
 /// <summary>
 /// this method is for the customer to choose action
@@ -336,7 +389,7 @@ Customer PostOfficeLogic::customerChooseAction(Customer customer)
 		cin >> input;
 		if (isNumber(input) && stoi(input) < 4 && stoi(input) > 0)
 		{
-			cout << "you chose number:" << input  << endl;
+			cout << "you chose number:" << input << endl;
 			customer.actionType = stoi(input);
 			choseAction = true;
 			actionNum = stoi(input);

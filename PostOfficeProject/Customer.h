@@ -16,6 +16,10 @@ class Customer // aka data class
 	void setCustomerHour();
 	int getCustomerHour();
 	string getCustomerHourAsFormattedString();
+	bool operator==(const Customer& other) const
+	{
+		return ID == other.ID;
+	}
 
 private:
 	int customerHour = 0;

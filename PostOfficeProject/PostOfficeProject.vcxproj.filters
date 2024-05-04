@@ -36,6 +36,9 @@
     <ClCompile Include="Officer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PostOfficeLogic.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Officer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

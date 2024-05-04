@@ -1,6 +1,7 @@
 #pragma once
 #include "Customer.h"
 #include "CustomerList.h"
+#include "MyList.h"
 #include "MyTime.h"
 #include "Officer.h"
 #include <vector>
@@ -25,6 +26,9 @@ public:
 	bool running = true;
 	void setOfficeSettings();
 private:
+	MyList customersQueueSTL;
+	bool nodeMode = false;
+	bool isCustomerInQueueSTL(int ID);
 	MyTime time;
 	customerList listOfCustomers;
     vector<Officer> officers;
@@ -38,13 +42,15 @@ private:
 	int maxAge = 150;
 	int seniorAge = 68;
 	int customersInQueue = 0;
+	Customer findNextCustomer(Officer officer);
+	void removeCustomerFromQueue(Customer customer);
 	void searchInCustomersQueue(int ID);
 	void addToQueue(int ID);
 	void customerActions();
 	void officerActions();
 	void customerActions(int ID);
 	void waitForInput();
-	bool isNumber(std::string s);
+	bool isNumber(string s);
 	int countDigits(int number);
 	Customer customerChooseAction(Customer customer);
 	Customer createNewCustomer(int ID);
@@ -55,6 +61,5 @@ public:
 	PostOfficeLogic();
 	~PostOfficeLogic();
 	int getSeniorAge();
-
 };
 
