@@ -1,5 +1,9 @@
 #include "CustomerList.h"
 
+/// <summary>
+/// will set the customer in the correct order in the queue
+/// </summary>
+/// <param name="customer"></param>
 void customerList::setQueueOrder(Customer customer)
 {
 	push(customer);
@@ -13,6 +17,10 @@ void customerList::sortCustomers()
 {
 	if (head != nullptr)sortByAge(head);
 }
+/// <summary>
+/// will sort the customer list by age
+/// </summary>
+/// <param name="currentHead"></param>
 void customerList::sortByAge(Node* currentHead)
 {
 	Node* current = currentHead;
@@ -61,6 +69,10 @@ Node* customerList::insertSorted(Node* sortedHead, Node* newNode)
 
 	return sortedHead;
 }
+/// <summary>
+/// pushes the customer to the list
+/// </summary>
+/// <param name="customerData"></param>
 void customerList::push(Customer customerData)
 {
 	Node* newNode = new Node(customerData);
@@ -79,6 +91,11 @@ void customerList::push(Customer customerData)
 		this->head = newNode;
 	}
 }
+/// <summary>
+/// finds the customer by ID
+/// </summary>
+/// <param name="ID"></param>
+/// <returns></returns>
 Node* customerList::findNode(int ID)
 {
 	Node* current = head;
@@ -92,6 +109,12 @@ Node* customerList::findNode(int ID)
 	}
 	return NULL;
 }
+/// <summary>
+/// will find the customer by the action type using Node* findNodeByActionType(int actionType, Node* fromHere)
+/// </summary>
+/// <param name="actionType"></param>
+/// <param name="elderly"></param>
+/// <returns></returns>
 Customer customerList::findCustomerByActionType(int actionType, bool elderly)
 {
 	Node* temp;
@@ -156,10 +179,13 @@ void customerList::printList()
 		queuePlace++;
 	}
 }
-
+/// <summary>
+/// deletes the node from the list
+/// </summary>
+/// <param name="del">the node which will be deleted</param>
+/// <returns></returns>
 bool customerList::deleteNode(Node* del)
 {
-
 	if (del == nullptr)
 	{
 		return false; 

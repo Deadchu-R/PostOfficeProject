@@ -13,6 +13,12 @@ void MyList::setQueueOrder(Customer customer)
 {
    push_front(customer);
 }
+/// <summary>
+/// will return the first customer in the list with specified action type
+/// </summary>
+/// <param name="actionType"></param>
+/// <param name="elderly"></param>
+/// <returns></returns>
 Customer MyList::findCustomerByActionType(int actionType, bool elderly)
 {	
 	string ageType = elderly ? "elderly" : "younger";
@@ -31,6 +37,10 @@ Customer MyList::findCustomerByActionType(int actionType, bool elderly)
 		nonExistentCustomer.actionType = -1;
 		return nonExistentCustomer;
 }
+/// <summary>
+/// will erase this customer from the list
+/// </summary>
+/// <param name="customer"></param>
 void MyList::eraseCustomer(Customer customer)
 {
 	for (auto it = begin(); it != end(); ++it)

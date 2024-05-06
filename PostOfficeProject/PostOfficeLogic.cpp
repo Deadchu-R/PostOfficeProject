@@ -13,7 +13,6 @@ PostOfficeLogic::~PostOfficeLogic()
 void PostOfficeLogic::setOfficeSettings()
 {
 	fstream config(officeSettingsFolderPath);
-	//fstream config("OfficeConfig.txt");
 	string line;
 	if (config.is_open())
 	{
@@ -140,6 +139,11 @@ void PostOfficeLogic::officerActions()
 		}
 	}
 }
+/// <summary>
+/// will find the next customer in line for specific officer
+/// </summary>
+/// <param name="officer"></param>
+/// <returns></returns>
 Customer PostOfficeLogic::findNextCustomer(Officer officer)
 {
 	Customer customer;
@@ -174,6 +178,10 @@ Customer PostOfficeLogic::findNextCustomer(Officer officer)
 	}
 	return customer;
 }
+/// <summary>
+/// will remove the customer from the queue
+/// </summary>
+/// <param name="customer"></param>
 void PostOfficeLogic::removeCustomerFromQueue(Customer customer)
 {
 	if (nodeMode == true)
@@ -292,6 +300,11 @@ void PostOfficeLogic::searchInCustomersQueue(int ID)
 	}
 
 }
+/// <summary>
+/// will check if the customer is in the queue and returns the value as boolean
+/// </summary>
+/// <param name="ID"></param>
+/// <returns></returns>
 bool PostOfficeLogic::isCustomerInQueueSTL(int ID)
 {
 	for (Customer customer : customersQueueSTL)
@@ -412,7 +425,6 @@ Customer PostOfficeLogic::findCustomer(int ID)
 {
 	Customer customer;
 	fstream customers(officeCustomersFolderPath);
-	//fstream customers("Customers.txt");
 	string line;
 	bool found = false;
 	if (customers.is_open())

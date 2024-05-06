@@ -25,6 +25,11 @@ string MyTime::currentTimeAsFormattedString()
 {
 	return to_string(getCurrentTime().tm_hour) + ":" + to_string(getCurrentTime().tm_min) + ":" + to_string(getCurrentTime().tm_sec);
 }
+/// <summary>
+/// will return the time as a string in the format of "HH:MM:SS"
+/// </summary>
+/// <param name="timeAsInt"></param>
+/// <returns></returns>
 string MyTime::timeAsIntToFormattedString(int timeAsInt)
 {
 	int hour = timeAsInt / 10000;
@@ -32,10 +37,14 @@ string MyTime::timeAsIntToFormattedString(int timeAsInt)
 	int second = timeAsInt % 100;
 	return to_string(hour) + ":" + to_string(minute) + ":" + to_string(second);
 }
+/// <summary>
+/// will returns the current time
+/// </summary>
+/// <returns></returns>
 tm MyTime::getCurrentTime()
 {
-	std::time_t current = std::time(nullptr);
-	std::tm current_tm;
+	time_t current = std::time(nullptr);
+	tm current_tm;
 
 	if (localtime_s(&current_tm, &current) != 0)
 	{

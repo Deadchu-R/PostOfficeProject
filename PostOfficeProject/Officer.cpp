@@ -13,9 +13,12 @@ Officer::Officer(int officerNumber)
 Officer::~Officer()
 {
 }
+/// <summary>
+/// this method will help the specified customer
+/// </summary>
+/// <param name="customer"></param>
 void Officer::helpCustomer(Customer customer)
 {
-	
 	ofstream data(officerDataName, ios::app);
 	// check if the config file exists
 	if (data.is_open())
@@ -36,6 +39,9 @@ void Officer::helpCustomer(Customer customer)
 		}
 	}
 }
+/// <summary>
+/// will raise the action type of the officer or reset it to 1 if it is at the max
+/// </summary>
 void Officer::raiseOfficerActionType()
 {
 	if (actionType >= maxActions)

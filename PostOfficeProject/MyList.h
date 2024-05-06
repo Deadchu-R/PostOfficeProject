@@ -1,9 +1,6 @@
 #pragma once
 #include <list>
 #include <iostream>
-#include <string>
-#include <ctime>
-#include "MyTime.h"
 #include "Customer.h"
 using namespace std;
 class MyList : public list<Customer>
