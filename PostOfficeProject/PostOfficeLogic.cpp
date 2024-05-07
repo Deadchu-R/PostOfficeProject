@@ -336,6 +336,7 @@ void PostOfficeLogic::addToQueue(int ID)
 	if (customer.isElderly()) elderlyCustomersInQueue++;
 	customersInQueue++;
 	cout << "your appointment nubmer is: "<< customer.getAppointmentNumber() << endl;
+	cout << "your appointment will be in about: " << waitingTime(customer) << " minutes" << endl;
 	if (nodeMode == true)listOfCustomers.setQueueOrder(customer);
 	else if (nodeMode == false) customersQueueSTL.setQueueOrder(customer);
 	cout << "if you are a new customer." << endl;
@@ -517,6 +518,10 @@ bool PostOfficeLogic::isNumber(string s)
 		}
 	}
 	return true;
+}
+int PostOfficeLogic::waitingTime(Customer customer)
+{
+	return customersInQueue * 5;
 }
 /// <summary>
 /// this method will wait for input before continuing

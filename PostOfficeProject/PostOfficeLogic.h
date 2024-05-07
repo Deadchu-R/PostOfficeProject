@@ -45,6 +45,7 @@ private:
 	int seniorAge = 68;
 	int customersInQueue = 0;
 	int elderlyCustomersInQueue = 0;
+	int waitingTime();
 	Customer findNextCustomer(Officer officer);
 	void removeCustomerFromQueue(Customer customer);
 	void searchInCustomersQueue(int ID);
