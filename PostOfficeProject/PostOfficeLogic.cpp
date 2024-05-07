@@ -18,6 +18,7 @@ void PostOfficeLogic::setOfficeSettings()
 	{
 		while (getline(config, line))
 		{
+			if (!isdigit(stoi(line.substr(line.find("=") + 1)))) cerr << "error, officer count is not a number" << endl;
 			if (line.find("officerCount") != string::npos)
 			{
 				officerCount = stoi(line.substr(line.find("=") + 1)); // stoi is basiclly like .parse in c# (converts string to int)
@@ -45,7 +46,7 @@ void PostOfficeLogic::setOfficeSettings()
 	{
 		cout << "Unable to open file, please check config.txt";
 	}
-	runPostOffice();
+	
 }
 /// <summary>
 /// this method will run the post office
@@ -439,6 +440,7 @@ Customer PostOfficeLogic::findCustomer(int ID)
 		{
 			if (line.find(to_string(ID)) != string::npos) /// find the line of the ID inside the file (ID of the customer)
 			{
+				
 				customer = setCustomerValues(line);
 				found = true;
 				return customer;
@@ -448,7 +450,7 @@ Customer PostOfficeLogic::findCustomer(int ID)
 		if (!found)
 		{
 			cout << "Customer sas not found" << std::endl;
-			cout << "either customer not registered or ID is invalid" << std::endl;
+			cout << "either customer not registered or ID is invalid" << endl;
 			cout << "choose action:" << endl;
 			cout << "1. try inserting ID again" << endl;
 			cout << "2. Create Customer account" << endl;
@@ -492,7 +494,8 @@ Customer PostOfficeLogic::setCustomerValues(string line)
 	Customer customer;
 	customer.ID = stoi(findDataBySymbol(line, IDSymbol));
 	customer.name = findDataBySymbol(line, nameSymbol);
-	customer.birthYear = stoi(findDataBySymbol(line, yearSymbol));
+	if (isNumber(findDataBySymbol(line, yearSymbol))) customer.birthYear = stoi(findDataBySymbol(line, yearSymbol));
+	else cout << "error, year is not a number, will use default numbers" << endl;
 	return customer;
 }
 
