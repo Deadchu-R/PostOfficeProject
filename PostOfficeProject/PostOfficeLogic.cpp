@@ -125,6 +125,7 @@ void PostOfficeLogic::officerActions()
 			officer.helpCustomer(customer);
 			removeCustomerFromQueue(customer);
 			cin.get(); /// for debuging
+			if (customer.isElderly()) elderlyCustomersInQueue--;
 			customersInQueue--;
 			officerActionRunning = false;
 			break;
@@ -274,6 +275,7 @@ void PostOfficeLogic::searchInCustomersQueue(int ID)
 					}
 				}
 			}
+			if (findCustomer(ID).isElderly()) elderlyCustomersInQueue--;
 			customersInQueue--;
 			cout << "you have been removed from the queue" << endl;
 			waitForInput();
@@ -331,9 +333,11 @@ void PostOfficeLogic::addToQueue(int ID)
 		<< "Customer Birth Year: " << customer.birthYear << endl;
 	customer = customerChooseAction(customer);
 	customer.setCustomerHour();
+	if (customer.isElderly()) elderlyCustomersInQueue++;
+	customersInQueue++;
+	cout << "your appointment nubmer is: "<< customer.getAppointmentNumber() << endl;
 	if (nodeMode == true)listOfCustomers.setQueueOrder(customer);
 	else if (nodeMode == false) customersQueueSTL.setQueueOrder(customer);
-	customersInQueue++;
 	cout << "if you are a new customer." << endl;
 	waitForInput();
 	runPostOffice();
@@ -405,6 +409,7 @@ Customer PostOfficeLogic::customerChooseAction(Customer customer)
 		{
 			cout << "you chose number:" << input << endl;
 			customer.actionType = stoi(input);
+			customer.setAppointmentNumber(customersInQueue, elderlyCustomersInQueue);
 			choseAction = true;
 			actionNum = stoi(input);
 		}

@@ -9,7 +9,9 @@ class Customer // aka data class
 	public:
     int birthYear = 1998;
 	string name = "John Doe";
-	int ID = 500000000; // lets say 9 digit number
+	int ID = 500000000; 
+	string getAppointmentNumber();
+	void setAppointmentNumber(int customersInQueue, int elderCustomersInQueue);
 	int actionType = 0;
 	int age();
 	bool isElderly();
@@ -24,5 +26,6 @@ class Customer // aka data class
 private:
 	int customerHour = 0;
 	MyTime time;
+	string appointmentNumber = "A000";
 };
 
